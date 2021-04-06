@@ -96,7 +96,7 @@ class DatabaseHealthchecks
         $checks['database']['tablesCount'] = false;
         try {
             $connection = ConnectionManager::get('default');
-            $tables = $connection->execute('show tables')->fetchAll('assoc');
+            $tables = $connection->getSchemaCollection()->listTables();
 
             if (isset($tables) && count($tables)) {
                 $checks['database']['tablesCount'] = (count($tables) > 0);

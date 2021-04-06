@@ -23,8 +23,20 @@ class V270AddPermissionsHistoryTable extends AbstractMigration
      * @return void
      */
     public function up()
-    {
-        $this->table('permissions_history', ['id' => false, 'primary_key' => ['id'], 'collation' => 'utf8mb4_unicode_ci'])
+    {   
+        $encoding= "utf8mb4";
+        $collation = "utf8mb4_unicode_ci";
+        switch($this->getAdapter()->getOptions()["adapter"]) {
+            case "pgsql": {
+                $encoding = "utf8";
+                $collation = "utf8_unicode_ci";
+                break;
+                }
+           default:
+     	       $encoding= "utf8mb4";
+               $collation = "utf8mb4_unicode_ci";
+        }
+        $this->table('permissions_history', ['id' => false, 'primary_key' => ['id'], 'collation' => $collation])
              ->addColumn('id', 'string', [
                  'default' => null,
                  'limit' => 36,

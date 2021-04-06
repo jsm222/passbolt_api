@@ -26,7 +26,19 @@ class V210InstallAccountSettingsPlugin extends AbstractMigration
      */
     public function up()
     {
-        $this->table('account_settings', ['id' => false, 'primary_key' => ['id'], 'collation' => 'utf8mb4_unicode_ci'])
+        $encoding= "utf8mb4";
+        $collation = "utf8mb4_unicode_ci";
+        switch($this->getAdapter()->getOptions()["adapter"]) {
+            case "pgsql": {
+                $encoding = "utf8";
+                $collation = "utf8_unicode_ci";
+                break;
+                }
+           default:
+     	       $encoding= "utf8mb4";
+               $collation = "utf8mb4_unicode_ci";
+        }
+        $this->table('account_settings', ['id' => false, 'primary_key' => ['id'], 'collation' => $collation])
             ->addColumn('id', 'char', [
                 'default' => null,
                 'limit' => 36,

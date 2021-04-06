@@ -52,8 +52,7 @@ class DropTablesTask extends AppShell
     {
         $datasource = $this->param('datasource');
         $connection = ConnectionManager::get($datasource);
-        $tables = $connection->execute('show tables');
-        $tables = $tables->fetchAll();
+        $tables = $connection->getSchemaCollection()->listTables();
         foreach ($tables as $table) {
             $this->out(__('Dropping table ' . $table[0]));
             $quotedTableName = $connection->getDriver()->quoteIdentifier($table[0]);
